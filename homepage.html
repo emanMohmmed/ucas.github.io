@@ -1,0 +1,784 @@
+
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><meta http-equiv="X-UA-Compatible" content="IE=edge" /><link href="/css/style.css" rel="stylesheet" />
+    <script src="/js/jquery-1.9.1.min.js"></script>
+    <script src="/js/jquery-ui-1.10.2.custom.min.js"></script>
+    <link href="/css/ui-lightness/jquery-ui-1.10.2.custom.min.css" rel="stylesheet" />
+    <script src="/js/modernizr.custom.67843.js"></script>
+    <script src="/js/jquery.isotope.min.js"></script>
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
+    
+
+   
+	<!-- Add mousewheel plugin (this is optional) -->
+	<script type="text/javascript" src="/js/fancybox/lib/jquery.mousewheel-3.0.6.pack.js"></script>
+
+	<!-- Add fancyBox main JS and CSS files -->
+	<script type="text/javascript" src="/js/fancybox/source/jquery.fancybox.js?v=2.1.5"></script>
+	<link rel="stylesheet" type="text/css" href="/js/fancybox/source/jquery.fancybox.css?v=2.1.5" media="screen" />
+
+	<!-- Add Button helper (this is optional) -->
+	<link rel="stylesheet" type="text/css" href="/js/fancybox/source/helpers/jquery.fancybox-buttons.css?v=1.0.5" />
+	<script type="text/javascript" src="/js/fancybox/source/helpers/jquery.fancybox-buttons.js?v=1.0.5"></script>
+
+	<!-- Add Thumbnail helper (this is optional) -->
+	<link rel="stylesheet" type="text/css" href="/js/fancybox/source/helpers/jquery.fancybox-thumbs.css?v=1.0.7" />
+	<script type="text/javascript" src="/js/fancybox/source/helpers/jquery.fancybox-thumbs.js?v=1.0.7"></script>
+
+	<!-- Add Media helper (this is optional) -->
+	<script type="text/javascript" src="/js/fancybox/source/helpers/jquery.fancybox-media.js?v=1.0.6"></script>
+    <link href="/css/social-sidebar.css" rel="stylesheet" /><link href="/css/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <!-- Add Notification ability -->
+    
+
+    <!--[if lt IE 9]>
+    <script src="/js/html5shiv.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+
+        var ischange = "false";
+        $(document).ready(function () {
+
+            $('#showmenu').click(function (e) {
+                if ($('.forhide').css('display') == 'none')
+                    $('.forhide').show(200);
+                else
+                    $('.forhide').hide(200);
+            });
+            
+            $(window).on('resize', function () {
+                if ($(this).width() > 600) {
+                    $('.forhide').removeAttr('style');
+                }
+            });
+            //$("#sidemenu").tooltip();
+
+            $('.date').datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: 'dd/mm/yy'
+            });
+
+
+            function selectMenu(lnk) {
+                var mItem = lnk  && lnk.substr(lnk.indexOf("M") + 1);
+                if (!$('#menu' + mItem).is(":visible"))
+                    $('.submenu').hide();
+                $('#menu' + mItem).show();
+            }
+
+            $('.menulnk').hover(function () {
+                selectMenu($(this).attr('id'));
+            });
+            $('.menu').mouseleave(function () {
+                $('.submenu').hide();
+                selectMenu($('.active a').attr("id"));
+            });
+
+            $('.submenu').hover(function () {
+                var mItem = $(this).attr('id').substr($(this).attr('id').indexOf("menu") + 4);
+                $('#M' + mItem).parent().addClass("active");
+            });
+            $('.submenu').mouseleave(function () {
+                var mItem = $(this).attr('id').substr($(this).attr('id').indexOf("menu") + 4);
+                $('#M' + mItem).parent().removeClass("active");
+                selectCurMenu();
+            });
+            
+            var p = window.location.pathname;
+            var a = p.split('/');
+            selectCurMenu();
+            function selectCurMenu() {
+                $(".firstnav li").each(function (n) {
+                    $(this).removeClass("active");
+                    if ($(this).find("a").attr("href").split('/')[1] == a[1]) {
+                        selectMenu($(this).find("a").attr('id'));
+                        $(this).addClass("active");
+                        return;
+                    }
+                });
+                if (a.length > 1) {
+                    $(".submenu li").each(function (n) {
+                        $(this).removeClass("active");
+                        if ($(this).find("a").attr("href").split('/')[2] == a[2]) {
+                            //selectMenu($(this).find("a").attr('id'));
+                            $(this).addClass("active");
+                            return;
+                        }
+                    });
+                }
+            }
+
+            $('#mainmenu .link[data-slide]').click(function (e) {
+                var $menu = $('#'+$(this).data('slide'));
+                if ($menu.css('display') == 'none') {
+                    $menu.slideDown();
+                    if ($menu.get(0).id == "notify_window") notifier.viewed();
+                }
+                else
+                    $menu.slideUp();
+                e.stopPropagation();
+            });
+
+            $(document).click(function () {
+                $('#account').slideUp();
+            });
+
+            $('.slide_menu').mouseleave(function () {
+                //$(this).slideUp();
+            });
+            $(".fb3").fancybox({
+                padding: 0,
+                openEffect: 'elastic',
+                openSpeed: 250,
+                closeEffect: 'elastic',
+                closeSpeed: 250,
+                width: '500px',
+                type: 'iframe',
+                afterClose: function () {
+                    if (ischange == "true")
+                        parent.location.reload(true);
+                }
+            });
+
+        });
+
+        //$(function () {
+        //    $.Isotope.prototype._positionAbs = function (x, y) {
+        //        return { right: x, top: y };
+        //    };
+        //    var $container = $('.icons');
+        //    $container.isotope({
+        //        itemSelector: '.icon',
+        //        transformsEnabled: false
+        //    });
+        //});
+        
+    </script>
+        <style>
+            .feedback
+            {
+                position:fixed;
+                bottom:30%; 
+                right:0px;
+            }
+        </style>
+    
+    <title>كشف درجات الطالب</title>
+<title>
+	UCAS - كشف الدرجات
+</title></head>
+<body>
+    
+  	<!--  <aside class="social-sidebar pos-left large theme-color label-square">
+        <ul>
+            <li><a href="https://www.facebook.com/groups/stuucas/" class="facebook selected" target="_blank"><span>Facebook</span></a></li>
+            <li><a href="https://www.youtube.com/user/TheUniversityCollege?sub_confirmation=1" class="youtube selected" target="_blank"><span>Youtube</span></a></li>
+            <li><a href="https://www.flickr.com/photos/ucasgaza" class="flickr selected" target="_blank"><span>Flickr</span></a></li>
+            <li><a href="https://twitter.com/UCASGaza" class="twitter selected" target="_blank"><span>Twitter</span></a></li>
+        </ul>
+    </aside>
+    -->
+
+    <form method="post" action="./transcript" id="form1">
+<div class="aspNetHidden">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="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" />
+</div>
+
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="C9AC496D" />
+</div>
+    <header id="header">
+        <a href="/home"><img class="logosys" src="/images/logosys.png" /></a>
+        <img class="logo" src="/images/logoheader.png" />
+    </header>
+<div class="menu">
+    <nav id="mainmenu">
+        <div class="forhide">
+            <ul class="firstnav" id="topnav">
+                <li class="active"><a id="M0" class="menulnk" href="/home">الرئيسية</a></li>
+                
+                        <li>
+                            <a id='M1' class="menulnk" href='/Registration'>القبول و التسجيل</a>
+                        </li>
+                    
+                        <li>
+                            <a id='M2' class="menulnk" href='/profile'>ملف الطالب</a>
+                        </li>
+                    
+                        <li>
+                            <a id='M4' class="menulnk" href='/personal_apps'>الطلبات الشخصية</a>
+                        </li>
+                    
+                        <li>
+                            <a id='M5' class="menulnk" href='/issues_and_applications'>القضايا و الطلبات</a>
+                        </li>
+                    
+                        <li>
+                            <a id='M6' class="menulnk" href='/evaluation'>التقييم الأكاديمي</a>
+                        </li>
+                    
+                        <li>
+                            <a id='M7' class="menulnk" href='/questionnair'>استبانات عامة</a>
+                        </li>
+                    
+                        <li>
+                            <a id='M8' class="menulnk" href='/library'>المكتبة</a>
+                        </li>
+                    
+            </ul>
+            <div class="menuline"></div>
+            <div class="info mobile">
+                <span class="key">الرقم</span>
+                <span class="value">220182078</span><br class="menubr" />
+                <span class="key">الاسم</span>
+                <span class="value">ايمان محمد فريد ابو زقيقة </span><div class="menuline"></div>
+                
+                <a class="link" href="/logout">
+                    <img src="/icons/close.png" />خروج</a>
+            </div>
+            <div class="info nomobile">
+                <a data-slide="notify_window" class="link notify" style="display:none">
+                    <img src="/icons/notify.png" />تنيهات <div id="notify_number" class="badge">2</div></a>
+                <a data-slide="account" class="link acc">
+                    <img src="/icons/account.png" />حسابي</a>
+            </div>
+            <div id="account" class="slide_menu">
+                <span class="link">
+                    <a href="/Profile/student_info"><img src="/icons/user_no.png" />220182078</a></span>
+                <span class="link">
+                    <a href="/Profile/student_info"><img src="/icons/user_name.png" /> ايمان محمد فريد أبو زقيقة </a></span>
+                <span class="link" style="clear:both; height:10px; border-bottom:dashed 1px #fff;"></span>
+                
+                <a class="link" href="/logout">
+                    <img src="/icons/close.png" />خروج</a>
+                
+                
+            </div>
+            <div id="notify_window" class="slide_menu ">
+                
+                
+                
+                <span class="link" style="clear:both; height:0px; border-bottom:dashed 1px #fff;"></span>
+                <a class="link" style="width:220px;" href="/logout">
+                    جميع التنبيهات</a>
+            </div>
+        </div>
+        <a id="showmenu"><img src="/icons/menu.png" />القائمة</a>
+    </nav>
+
+    <nav id="submenu" class="nomobile">
+        
+                <div id='menu1' class="submenu" style="display: none;">
+                    <h3> القبول و التسجيل : </h3>
+                    <ul>
+                        
+                                <li>
+                                    <a id='M18' title='تمكين الطالب من الاطلاع على خطته الدراسية' href='/Registration/study_plan'>الخطة الدراسية</a>
+                                </li>
+                            
+                                <li>
+                                    <a id='M49' title='المساقات المسجلة للفصل الدراسي الحالي والفصول السابقة.' href='/Registration/Registered_Subjects'>المساقات المسجلة</a>
+                                </li>
+                            
+                                <li>
+                                    <a id='M9' title='تسجيل المساقات في الفصل الدراسي و السحب و الإضافة و تغيير الشعب' href='/Registration/semester_registration'>التسجيل الفصلي</a>
+                                </li>
+                            
+                                <li>
+                                    <a id='M10' title='يوضح الجدول الدراسي للطالب بالتفصيل الأيام و المواعيد و المساقات و الشعب' href='/Registration/semester_table'>الجدول التفصيلي</a>
+                                </li>
+                            
+                                <li>
+                                    <a id='M12' title='تحتوي على الأجندة الفصلية مثل بدء الدراسة و التسجيل و السحب و الإضافة' href='/Registration/academic_calendar'>التقويم الأكاديمي</a>
+                                </li>
+                            
+                                <li>
+                                    <a id='M57' title='تحتوي على جدول مواعيد الامتحانات النهائية.' href='/Registration/exams_schedule'>جدول الإمتحانات</a>
+                                </li>
+                            
+                                <li>
+                                    <a id='M19' title='عبارة عن جدول بدرجات الطالب مصنفة حسب الفصول الدراسية.' href='/Registration/transcript'>كشف الدرجات</a>
+                                </li>
+                            
+                                <li>
+                                    <a id='M25' title='تحتوي على مساقات الطالب المسجلة حاليا وتوصيفها' href='/Registration/course_descriptions'>توصيف المساقات</a>
+                                </li>
+                            
+                                <li>
+                                    <a id='M208' title='للتسجيل في امتحانات المستوى مثل امتحان مستوى اللغة الانجليزية وامتحان مستوى القراءن وغيرها.' href='/Registration/exams_level'>تقديم لامتحانات المستوى</a>
+                                </li>
+                            
+                                <li>
+                                    <a id='M248' title='لاستعراض المواد والمساقات التي تم طرحها في الفصل الحالي , كذلك الفصلص القادم.' href='/Registration/semester_subjects'>المواد لهذا الفصل</a>
+                                </li>
+                            
+                    </ul>
+                </div>
+            
+                <div id='menu2' class="submenu" style="display: none;">
+                    <h3> ملف الطالب : </h3>
+                    <ul>
+                        
+                                <li>
+                                    <a id='M15' title='تمكين الطالب من تغيير كلمة المرور الخاصة به' href='/profile/change_password'>تغيير كلمة المرور</a>
+                                </li>
+                            
+                                <li>
+                                    <a id='M48' title='يقوم الطالب بتعبئة بيانات طلب اقرار خريج حتى تتحول حالته الى خريج اذا كانت بياناته صحيحة.' href='/profile/graduate_allowance_form'>اقرار خريج</a>
+                                </li>
+                            
+                                <li>
+                                    <a id='M20' title='عبارة عن سجلات مالية تخص الطالب بحيث يعرف الطالب تاريخ الدفعات التي قام بها وتاريخ المستحقات لكل فصل دراسي' href='/profile/financial_profile'>الملف المالي</a>
+                                </li>
+                            
+                                <li>
+                                    <a id='M21' title='يتعرف الطالب من خلالها على مرشده المالي ويتلقى الرسائل التي يرسلها مرشده المالي.' href='/profile/financial_advisor'>المرشد المالي</a>
+                                </li>
+                            
+                                <li>
+                                    <a id='M22' title='يتعرف الطالب من خلالها على مرشده الاكاديمي ويتلقى الرسائل التي يرسلها مرشده.' href='/profile/academic_advisor'>المرشد الأكاديمي</a>
+                                </li>
+                            
+                                <li>
+                                    <a id='M16' title='تفعيل البريد الالكتروني وفحص حالة البريد.' href='/profile/email'>البريد الإلكتروني</a>
+                                </li>
+                            
+                                <li>
+                                    <a id='M17' title='قم من هذه الصفحة بمراجعة بياناتك واحرص ان تكون جميع بياناتك الاساسية سليمة وصحيحة.' href='/profile/student_info'>بيانات الطالب</a>
+                                </li>
+                            
+                                <li>
+                                    <a id='M288' title='للاستعلام عن المنح والقروض الخاصة بالطالب حسب الفصل.' href='/profile/discounts_gifts'>المنح والقروض</a>
+                                </li>
+                            
+                                <li>
+                                    <a id='M328' title='للاستعلام عن المنح والقروض المقدمة من التعليم العالي- برنامج إقراض.' href='/profile/Iqrad'>قروض التعليم العالي</a>
+                                </li>
+                            
+                    </ul>
+                </div>
+            
+                <div id='menu4' class="submenu" style="display: none;">
+                    <h3> الطلبات الشخصية : </h3>
+                    <ul>
+                        
+                                <li>
+                                    <a id='M28' title='في حال اردت طلب مساعدة لتغطية الرسوم الدراسية او الحصول على منحة يمكنك استخدام هذه الصفحة لتعبئة بياناتك.' href='/personal_apps/assistance_request'>البحث الاجتماعي</a>
+                                </li>
+                            
+                                <li>
+                                    <a id='M30' title='تمكين الطالب من استخدام خدمة الانترنت اللاسلكي في الكلية للفصل الحالي.' href='/personal_apps/internet_subscription'>إشتراك الإنترنت</a>
+                                </li>
+                            
+                                <li>
+                                    <a id='M29' title='تمكين الطالب من استلام درجاته للمساقات المسجلة للفصل الحالي فور اعتمادها.' href='/personal_apps/sms_subscription'>إشتراك الرسائل القصيرة</a>
+                                </li>
+                            
+                                <li>
+                                    <a id='M130' title='الطالب:استخدم هذه الشاشة لدفع الرسوم الدراسية من خلال البنوك' href='/personal_apps/pay_banks'>الدفع من خلال البنك</a>
+                                </li>
+                            
+                                <li>
+                                    <a id='M150' title='تحتوي على طلبات الإفادات التي ممكن أن يحتاجها الطال مثل شهادة القيد و إفادة خريج.' href='/personal_apps/Student_Informs'>الإفادات</a>
+                                </li>
+                            
+                                <li>
+                                    <a id='M317' title='الذهاب الى حساب دريم سبارك' href='/personal_apps/UserVerification'>حساب دريم سبارك</a>
+                                </li>
+                            
+                    </ul>
+                </div>
+            
+                <div id='menu5' class="submenu" style="display: none;">
+                    <h3> القضايا و الطلبات : </h3>
+                    <ul>
+                        
+                                <li>
+                                    <a id='M32' title='من هنا يمكنك تقديم طلب احتساب من مئة او طلب غير مكتمل او طلب مراجعة لاي مساق من مساقات المسجلة لهذا الفصل.' href='/issues_and_applications/courses_applications'>طلبات المساقات</a>
+                                </li>
+                            
+                                <li>
+                                    <a id='M108' title='من هنا يمكنك تقديم طلب تأجيل الفصل الدراسي الحالي' href='/issues_and_applications/postponement'>طلب تأجيل فصل</a>
+                                </li>
+                            
+                                <li>
+                                    <a id='M109' title='من هنا يمكنك تقديم طلب إعادة قيد الفصل الدراسي الحالي' href='/issues_and_applications/re_under'>طلب إعادة قيد</a>
+                                </li>
+                            
+                                <li>
+                                    <a id='M168' title='استخدم هذه الصفحة لتحويل تخصصك الحالي الى تخصص اخر.' href='/issues_and_applications/dept_trans'>طلب تحويل تخصص</a>
+                                </li>
+                            
+                                <li>
+                                    <a id='M31' title='قضايا التسجيل' href='/issues_and_applications/registration_issues'>قضايا التسجيل</a>
+                                </li>
+                            
+                    </ul>
+                </div>
+            
+                <div id='menu6' class="submenu" style="display: none;">
+                    <h3> التقييم الأكاديمي : </h3>
+                    <ul>
+                        
+                                <li>
+                                    <a id='M44' title='تقييم الطالب للمدرس' href='/evaluation/academic_assessment'>التقييم الأكاديمي</a>
+                                </li>
+                            
+                    </ul>
+                </div>
+            
+                <div id='menu7' class="submenu" style="display: none;">
+                    <h3> استبانات عامة : </h3>
+                    <ul>
+                        
+                                <li>
+                                    <a id='M45' title='قائمة الاستبانات الحالية' href='/questionnair/general_questionnaires'>استبانات عامة</a>
+                                </li>
+                            
+                    </ul>
+                </div>
+            
+                <div id='menu8' class="submenu" style="display: none;">
+                    <h3> المكتبة : </h3>
+                    <ul>
+                        
+                                <li>
+                                    <a id='M47' title='يمكنك من هنا الحصول على نماذج الامتحانات لمساقات الفصل الحالي.' href='/library/examinations_samples'>نماذج الامتحانات</a>
+                                </li>
+                            
+                                <li>
+                                    <a id='M46' title='الاطلاع على الكتب المستعارة من المكتبة كما ويمكنه تجديد الاستعارة' href='/library/borrowed_books'>الكتب المستعارة</a>
+                                </li>
+                            
+                    </ul>
+                </div>
+            
+    </nav>
+</div>
+    
+
+
+    <section id="content">
+        <div class="block_wide nomobile">
+            <div class="block-body">
+                <div class="row_sml">
+                    <p>&#8250; <a id="lblStudentNo" class="link_sml c_blue">220182078</a></p>
+                    <p>&#8250; <a id="lblStudentName" class="link_sml c_green">ايمان محمد فريد ابو زقيقة </a></p>
+
+
+                    <p class="c_blue d_left">
+                        <span id="lblTaw_College">قسم الهندسة</span>
+                    </p>
+                    <p class="c_orang d_left">&#8250; الكلية:</p>
+                    <p class="c_blue d_left">
+                        <span id="lblSpecial">هندسة تكنولوجيا المباني </span>
+                </p>
+                    <p class="c_orang d_left">&#8250; التخصص:</p>
+
+                </div>
+    </div>
+        </div>
+         
+
+        
+        
+
+    <div class="block_wide">
+        <div class="block-header">
+            <h2 class="header">كشف الدرجات</h2>
+            <a class="topbtn">درجات الطالب</a>
+        </div>
+        <div class="block-body">
+
+            
+
+            
+                
+                    <div class="rowheader nowrap">
+                        <p class="a_center">الفصل الدراسي الأول 2018/2019 </p>
+                    </div>
+
+                    
+                            <div class="rowtd_alt nomobile nowrap">
+                                <p class="a_center" style="width: 120px"><strong>رقم المساق</strong></p>
+                                <p class="d_right" style="width: 250px;"><strong>اسم المساق</strong></p>
+                                <p class="a_center" style="width: 80px;"><strong>ع الساعات</strong></p>
+                                <p class="a_center" style="width: 100px;"><strong>العلامة النصفية</strong></p>
+                                <p class="a_center" style="width: 100px;"><strong>العلامة النهائية</strong></p>
+                                <p class="a_center" style="width: 70px"><strong>المجموع</strong></p>
+                            </div>
+                        
+                            <div class="rowtd">
+                                <p class="mobile c_bg_blue c_green">رقم المساق </p>
+                                <p class="a_center" style="width: 120px">UNIB 1003 </p>
+                                <p class="mobile c_bg_blue c_green">اسم المساق </p>
+                                <p class="d_right" style="width: 250px"> Computer engineering drowing </p>
+                                <p class="mobile c_bg_blue c_green">ع الساعات </p>
+                                <p class="a_center" style="width: 80px">3 </p>
+                                <p class="mobile c_bg_blue c_green">العلامة النصفية </p>
+                                <p class="a_center c_green" style="width: 100px">35 </p>
+                                <p class="mobile c_bg_blue c_green">العلامة النهائية </p>
+                                <p class="a_center c_green" style="width: 100px">52 </p>
+                                <p class="mobile c_bg_blue c_green">المجموع </p>
+                                <p class="a_center c_blue" style="width: 70px">87</p>
+                            </div>
+
+                        
+                            <div class="rowtd_alt">
+                                <p class="mobile c_bg_blue c_green">رقم المساق </p>
+                                <p class="a_center" style="width: 120px">ISSE 1101 </p>
+                                <p class="mobile c_bg_blue c_green">اسم المساق </p>
+                                <p class="d_right" style="width: 250px">Principles of surveying  </p>
+                                <p class="mobile c_bg_blue c_green">ع الساعات </p>
+                                <p class="a_center" style="width: 80px">3 </p>
+                                <p class="mobile c_bg_blue c_green">العلامة النصفية </p>
+                                <p class="a_center c_green" style="width: 100px">33 </p>
+                                <p class="mobile c_bg_blue c_green">العلامة النهائية </p>
+                                <p class="a_center c_green" style="width: 100px">59 </p>
+                                <p class="mobile c_bg_blue c_green">المجموع </p>
+                                <p class="a_center c_blue" style="width: 70px">85 </p>
+                            </div>
+
+                        
+                            <div class="rowtd">
+                                <p class="mobile c_bg_blue c_green">رقم المساق </p>
+                                <p class="a_center" style="width: 120px">PHYS 1101 </p>
+                                <p class="mobile c_bg_blue c_green">اسم المساق </p>
+                                <p class="d_right" style="width: 250px">Principles of Programming  </p>
+                                <p class="mobile c_bg_blue c_green">ع الساعات </p>
+                                <p class="a_center" style="width: 80px">3 </p>
+                                <p class="mobile c_bg_blue c_green">العلامة النصفية </p>
+                                <p class="a_center c_green" style="width: 100px">34 </p>
+                                <p class="mobile c_bg_blue c_green">العلامة النهائية </p>
+                                <p class="a_center c_green" style="width: 100px">44 </p>
+                                <p class="mobile c_bg_blue c_green">المجموع </p>
+                                <p class="a_center c_blue" style="width: 70px">78 </p>
+                            </div>
+
+                        
+                            <div class="rowtd_alt">
+                                <p class="mobile c_bg_blue c_green">رقم المساق </p>
+                                <p class="a_center" style="width: 120px">UNIB 1201 </p>
+                                <p class="mobile c_bg_blue c_green">اسم المساق </p>
+                                <p class="d_right" style="width: 250px"> Holly Qura'n </p>
+                                <p class="mobile c_bg_blue c_green">ع الساعات </p>
+                                <p class="a_center" style="width: 80px">2 </p>
+                                <p class="mobile c_bg_blue c_green">العلامة النصفية </p>
+                                <p class="a_center c_green" style="width: 100px">38 </p>
+                                <p class="mobile c_bg_blue c_green">العلامة النهائية </p>
+                                <p class="a_center c_green" style="width: 100px">52 </p>
+                                <p class="mobile c_bg_blue c_green">المجموع </p>
+                                <p class="a_center c_blue" style="width: 70px">90 </p>
+                            </div>
+
+                        
+                            <div class="rowtd">
+                                <p class="mobile c_bg_blue c_green">رقم المساق </p>
+                                <p class="a_center" style="width: 120px">UNIB 1203 </p>
+                                <p class="mobile c_bg_blue c_green">اسم المساق </p>
+                                <p class="d_right" style="width: 250px">English Language </p>
+                                <p class="mobile c_bg_blue c_green">ع الساعات </p>
+                                <p class="a_center" style="width: 80px">2 </p>
+                                <p class="mobile c_bg_blue c_green">العلامة النصفية </p>
+                                <p class="a_center c_green" style="width: 100px">36 </p>
+                                <p class="mobile c_bg_blue c_green">العلامة النهائية </p>
+                                <p class="a_center c_green" style="width: 100px">56 </p>
+                                <p class="mobile c_bg_blue c_green">المجموع </p>
+                                <p class="a_center c_blue" style="width: 70px">92 </p>
+                            </div>
+
+                        
+                            <div class="rowtd_alt">
+                                <p class="mobile c_bg_blue c_green">رقم المساق </p>
+                                <p class="a_center" style="width: 120px">UNIB 1302 </p>
+                                <p class="mobile c_bg_blue c_green">اسم المساق </p>
+                                <p class="d_right" style="width: 250px"> Statics </p>
+                                <p class="mobile c_bg_blue c_green">ع الساعات </p>
+                                <p class="a_center" style="width: 80px">3 </p>
+                                <p class="mobile c_bg_blue c_green">العلامة النصفية </p>
+                                <p class="a_center c_green" style="width: 100px">34 </p>
+                                <p class="mobile c_bg_blue c_green">العلامة النهائية </p>
+                                <p class="a_center c_green" style="width: 100px">51 </p>
+                                <p class="mobile c_bg_blue c_green">المجموع </p>
+                                <p class="a_center c_blue" style="width: 70px">85 </p>
+                            </div>
+
+                 
+
+
+                    <div class="rowfooter nowrap">
+                        <p class="d_left">المعدل الفصلي: 87.47 %</p>
+                        <p class="d_left" style="">المعدل التراكمي: 87.47 % </p>
+                    </div>
+
+                   
+
+
+                
+                    <br />
+                
+        
+
+                
+                    <br />
+                
+  
+        
+        </div>
+        <div class="block-footer">
+
+            <a href="study_plan"><span class="normal_link">للإطلاع على الخطة الدراسية </span></a>
+        </div>
+    </div>
+
+    <div class="block d_right">
+        <div class="block-header">
+            <h2 class="header">مفتاح الرموز</h2>
+        </div>
+        <div class="block-body">
+            <div class="row">
+                <p class="listp">W	  	الطالب منسحب من المساق.</p>
+            </div>
+            <div class="row" style="border-top: dashed 1px #999;">
+                <p class="listp">P	  	الطالب ناجح في المساق.</p>
+            </div>
+            <div class="row" style="border-top: dashed 1px #999;">
+                <p class="listp">Tr	  	المساق تمت معادلته.</p>
+            </div>
+
+            <div class="row" style="border-top: dashed 1px #999;">
+                <p class="listp">R	  	المساق معاد ويدل الرقم المقرون بالرمز على عدد مرات الإعادة.</p>
+            </div>
+
+            <div class="row" style="border-top: dashed 1px #999;">
+                <p class="listp">I	  	غير مكتمل.</p>
+            </div>
+            <div class="row" style="border-top: dashed 1px #999;">
+                <p class="listp">*	  	المساق خارج الخطة وعلامته لا تدخل في حساب المعدل التراكمي وعدد ساعات الدراسة التراكمية.</p>
+            </div>
+
+
+        </div>
+        <div class="block-footer">
+            <a class="normal_link">لتبقى على تواصل تابعنا على صفحة الفيسبوك</a>
+        </div>
+    </div>
+
+<div class="feedback nomobile"><a href="/feedback.aspx" class="fb3 fancybox.iframe"><img src="/icons/feedback.png" /></a></div>
+    </section>
+    <footer id="footer">
+        <div class="footer_content"><img class="footerlogo" src="https://my.ucas.edu.ps/images/fotlogo.png" alt"" /></div>
+        <span id="siteseal"><script type="text/javascript" src="https://seal.godaddy.com/getSeal?sealID=IP2QHDv5RTGJ5mPgZnMkTsPMXnlw9Hxz22phkaZoFQB22FF9Xgem"></script></span>
+    </footer>
+         
+    <script type="text/javascript">
+        var notifier = function ($list) {
+            /*dataList = jQuery.map($list.children('span[data-notify-id]'), function (n, i) {
+                return $(n).data("notify-id");
+            });*/
+            ntf_viewed = function () {
+                $('a[data-slide="' + $list.get(0).id + '"]').children('.badge').remove();
+                var i = 0;
+                $list.children('span').each(function (e) { $(this).removeClass('new'); ++i; })
+                if (i>0) {
+                    $.ajax({
+                        url: "WebService.asmx/SET_STD_NOTIFICATIONS_READ"
+                    });
+                }
+            };
+
+            init = function () {
+                if (!!window.EventSource) {
+                    //if (user_type === 'T') {
+                        var source = new EventSource("/events/notify_sse.aspx");
+                        source.addEventListener('message', function (e) {
+                        }, false);
+
+                        source.addEventListener('notify#20131000', function (e) {
+                            var data = JSON.parse(e.data);
+                            console.log(e);
+                            $.pnotify({
+                                title: 'طلب جديد',
+                                text: 'تم الإعلان عن طريقة جديدة للعرض',
+                                type: "info",
+                                delay: 8000
+                            });
+                        }, false);
+
+                        source.addEventListener('open', function (e) {
+                        }, false);
+
+                        source.addEventListener('error', function (e) {
+                            if (e.readyState == EventSource.CLOSED) {
+                            }
+                        }, false);
+                    //}
+                }
+                else {
+                    alert('Server Side Event is not supported');
+                }
+            }
+
+            //init();
+            return {
+                viewed: ntf_viewed
+                //,data:dataList
+            }
+        }($('#notify_window'));
+
+        //(function () {
+        //    if (!!window.EventSource) {
+        //        if (user_type === 'T') {
+        //            var base_url = prod ? "/cc/ccm/" : "/ccm/";
+        //            var source = new EventSource(base_url + "sse.aspx");
+        //            source.addEventListener('message', function (e) {
+        //            }, false);
+
+        //            source.addEventListener('new_app_notify', function (e) {
+        //                var data = JSON.parse(e.data);
+        //                console.log(data.emp_no, data.req_no, data.app_id);
+        //                if (data.emp_no == user_no && last_app_id != data.app_id && data.app_id != '0') {
+        //                    try {
+        //                        $.pnotify({
+        //                            title: 'طلب جديد',
+        //                            text: data.msg,
+        //                            type: "info",
+        //                            delay: 8000
+        //                        });
+        //                        last_app_id = data.app_id;
+        //                        data.count = $("#divTechMonitorDiv").children('div').length;
+        //                        $("#appTemplate").tmpl(data).appendTo("#divTechMonitorDiv").animate({ "background-color": "#FCFCFC", "border-color": "##CCC" }, { duration: 10000 });
+        //                        if ($('#embed')) $('#embed').remove();
+        //                        $('body').append('<embed id="embed" src="' + base_url + 'assets/alert.wav" autostart="true" hidden="true" loop="2" playcount="2">');
+        //                    } catch (e) { }
+        //                }
+        //            }, false);
+
+        //            source.addEventListener('open', function (e) {
+        //            }, false);
+
+        //            source.addEventListener('error', function (e) {
+        //                if (e.readyState == EventSource.CLOSED) {
+        //                }
+        //            }, false);
+        //        }
+        //    }
+        //    else {
+        //        alert('Server Side Event is not supported');
+        //    }
+        //}($));
+
+    </script>
+    
+    </form>
+
+   
+
+</body>
+</html>
